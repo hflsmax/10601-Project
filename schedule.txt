@@ -1,0 +1,11 @@
+(one week)10.31
+Implement K-nearest neighbor, neural network
+(one week)11.1
+Implement multinomial logistic
+(two weeks; midway report)11.24
+Implement HOG feature extraction; possibly implement other feature extraction method
+(two weeks)12.6
+Implement dimensionality reduction and cross-validation
+(one week)12.13
+Writing report
+
