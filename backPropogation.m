@@ -1,34 +1,38 @@
 function [ newHiddenW, newOutputW ] = backPropogation...
                                     (inputn, hiddenn, outputn, ...
                                     input, output, ...
-                                    hiddenW, outputW)
+                                    hiddenW, outputW, lambda)
 %backPropogation takes the size of the nn, input, output and previous 
 %weight of the nn, return the new weight of the nn
 
 
 assert(length(input) == inputn);
 assert(length(output) == outputn);
-assert(size(hiddenW) == [inputn, hiddenn]);
-assert(size(outputW) == [hiddenn, outputn]);
+[x, y] = size(hiddenW);
+assert(x == inputn);
+assert(y == hiddenn);
+[x, y] = size(outputW);
+assert(x == hiddenn);
+assert(y == outputn);
+
 
 %compute hiddenOut
-hiddenOut = zeros(inputn, hiddenn);
+hiddenOut = zeros(hiddenn, 1);
 for i = 1:hiddenn
-    for j = 1:inputn
-        net = sum(hiddenW(i,:)*input);
-        sigma = 1/(1+exp(-net));
-        hiddenOut(i) = sigma;
-    end
+    net = sum(input*hiddenW(:,i));
+    sigma = 1/(1+exp(-net));
+    hiddenOut(i) = sigma;
 end
+hiddenOut
+
+
 
 %compute observed output
-observed = zeros(hiddenn, outputn);
+observed = zeros(outputn, 1);
 for i = 1:outputn
-    for j = 1:hiddenn
-        net = sum(outputW(i,:)*hiddenOut);
-        sigma = 1/(1+exp(-net));
-        observed(i) = sigma;
-    end
+    net = sum(hiddenOut.'*outputW(:,i));
+    sigma = 1/(1+exp(-net));
+    observed(i) = sigma;
 end
         
         
@@ -37,11 +41,16 @@ sigmaOutput = zeros(outputn,1);
 for i = 1:outputn
     sigmaOutput(i) = observed(i)*(1-observed(i))*(output(i)-observed(i));
 end
+
+
 %sigma of hidden
 sigmaHidden = zeros(hiddenn, 1);
 for i = 1:hiddenn
-    sigmaHidden(i) = hiddenOut(i)*(1-hiddenOut(i))*sum(hiddenW(i,:)*sigmaOutput);
+    sigmaHidden(i) = hiddenOut(i)*(1-hiddenOut(i))*sum(outputW(i,:)*sigmaOutput);
 end
+
+
+
 %update hiddenW
 newHiddenW = hiddenW;
 for i = 1:inputn
