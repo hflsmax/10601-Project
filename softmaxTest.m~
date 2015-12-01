@@ -1,0 +1,22 @@
+function [ accuracy ] = softmaxTest( data, label )
+%UNTITLED3 Summary of this function goes here
+%   Detailed explanation goes here
+
+
+
+trainX = data(1:100, :);
+trainY = label(1:100);
+testX = data(101:200, :);
+testY = label(101:200, :);
+
+theta = softmaxTrain(im2double(trainX), double(trainY), 3, 0.1);
+
+result = zeros(100, 1);
+for i = 1:100
+    result(i) = softmaxClassifier(im2double(testX(i, :)), theta);
+end
+result
+accuracy = sum(result == testY) / 100
+
+end
+

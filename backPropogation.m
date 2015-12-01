@@ -23,7 +23,6 @@ for i = 1:hiddenn
     sigma = 1/(1+exp(-net));
     hiddenOut(i) = sigma;
 end
-hiddenOut
 
 
 
@@ -58,6 +57,11 @@ for i = 1:inputn
         newHiddenW(i,j) = hiddenW(i,j) + lambda * sigmaHidden(j) * input(i);
     end
 end
+for i = 1:hiddenn
+    newHiddenW(:, i) = newHiddenW(:, i) / sum(newHiddenW(:, i));
+end
+
+
 %update outputW
 newOutputW = outputW;
 for i = 1:hiddenn
@@ -65,7 +69,11 @@ for i = 1:hiddenn
         newOutputW(i,j) = outputW(i,j) + lambda * sigmaOutput(j) * hiddenOut(i);
     end
 end
-    
+for i = 1:outputn
+    newOutputW(:,i) = newOutputW(:,i) / sum(newOutputW(:,i));
+end
+
+sum(sum(abs(newOutputW - outputW)))
 
 end
 

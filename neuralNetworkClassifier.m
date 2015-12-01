@@ -10,8 +10,6 @@ function [ label ] = neuralNetworkClassifier( hiddenW, outputW,...
 hiddenOut = zeros(hiddenn, 1);
 
 for i = 1:hiddenn
-    size(hiddenW(:,i))
-    size(input)
     net = sum(hiddenW(:,i).'*input.');
     sigma = 1/(1+exp(-net));
     hiddenOut(i) = sigma;
@@ -25,7 +23,7 @@ for i = 1:outputn
     observed(i) = sigma;
 end
 
-observed
+
 [~, I] = max(observed);
 label = I-1;
 
